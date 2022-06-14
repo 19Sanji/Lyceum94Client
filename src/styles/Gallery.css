@@ -1,0 +1,27 @@
+.gallery_content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+    min-height: 100vh;
+}
+.gallery_content img{
+    height: 525px;
+}
+.slider {
+    position: relative;
+    width: 80%;
+    height: 800px;
+    margin: auto;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .slider-img {
+    position: absolute;
+    width: 100%;
+    height: 800px;
+    transition: all 0.2s;
+  }
