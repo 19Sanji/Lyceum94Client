@@ -21,9 +21,21 @@ function Comments({ postId }) {
   }
 
   React.useEffect(() => {
-    const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
-    setThisUserId(sessionStorageUserData[0].id_пользователя);
-    LoadComments();
+    let isMounted = true;
+
+    if (isMounted) {
+      const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
+      setThisUserId(sessionStorageUserData[0].id_пользователя);
+      LoadComments();
+    } else {
+      setMyArea("");
+      setThisUserId();
+      setCommentArray([]);
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [postId]);
 
   return (

@@ -35,8 +35,24 @@ function NewPost() {
   }
 
   React.useEffect(() => {
-    const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
-    setThisUserId(sessionStorageUserData[0].id_пользователя);
+    let isMounted = true;
+
+    if (isMounted) {
+      const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
+      setThisUserId(sessionStorageUserData[0].id_пользователя);
+    }
+    else{
+      setMyTitle("");
+      setMyArea("");
+      setMyFile();
+      setThisUserId();
+      setMyVideoUrl("");
+    }
+
+    return () => {
+      isMounted = false;
+
+    };
   }, []);
 
   return (

@@ -9,28 +9,40 @@ function NavBar(userIsAuth) {
   const [LogoutLinkVisible, setLogoutLinkVisible] = React.useState(true);
   const [LoginLinkVisible, setLoginLinkVisible] = React.useState(false);
   const [PostListLinkVisible, setPostListLinkVisible] = React.useState(true);
-  
+
   const [isAdmin, setIsAdmin] = React.useState(false);
 
   React.useEffect(() => {
-    const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
-    if (sessionStorageUserData) {
-      setLoginLinkVisible(true);
-      setLogoutLinkVisible(false);
-      setPostListLinkVisible(false);
+    let isMounted = true;
 
-      if (sessionStorageUserData[0].Статус === "Администратор") {
-        setIsAdmin(true);
+    if (isMounted) {
+      const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
+      if (sessionStorageUserData) {
+        setLoginLinkVisible(true);
+        setLogoutLinkVisible(false);
+        setPostListLinkVisible(false);
+
+        if (sessionStorageUserData[0].Статус === "Администратор") {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
       } else {
+        setLoginLinkVisible(false);
+        setLogoutLinkVisible(true);
+        setPostListLinkVisible(true);
+
         setIsAdmin(false);
       }
     } else {
-      setLoginLinkVisible(false);
       setLogoutLinkVisible(true);
+      setLoginLinkVisible(false);
       setPostListLinkVisible(true);
-
-      setIsAdmin(false);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [userIsAuth, userData.UserIsAuth, userData.StorageUserData]);
 
   return (

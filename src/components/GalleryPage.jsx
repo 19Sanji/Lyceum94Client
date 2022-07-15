@@ -13,9 +13,19 @@ function GalleryPage() {
   }
 
   React.useEffect(() => {
-    if (imgArray.length === 0) {
-      GetImg();
+    let isMounted = true;
+
+    if (isMounted) {
+      if (imgArray.length === 0) {
+        GetImg();
+      }
+    } else {
+      setImgArray([]);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [imgArray]);
 
   return (
@@ -24,7 +34,7 @@ function GalleryPage() {
         <Carousel>
           {imgArray.map((image) => {
             return (
-              <Carousel.Item>
+              <Carousel.Item key={image}>
                 <img src={"http://localhost:3001/image/gallery/" + image} />
               </Carousel.Item>
             );

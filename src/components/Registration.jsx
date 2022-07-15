@@ -14,17 +14,33 @@ export default function Registration() {
   const [ButtonState, setButtonState] = React.useState(true);
 
   React.useEffect(() => {
-    if (
-      surname.length !== 0 &&
-      name.length !== 0 &&
-      patronymic.length !== 0 &&
-      login.length !== 0 &&
-      password.length !== 0
-    ) {
-      setButtonState(false);
+    let isMounted = true;
+
+    if (isMounted) {
+      if (
+        surname.length !== 0 &&
+        name.length !== 0 &&
+        patronymic.length !== 0 &&
+        login.length !== 0 &&
+        password.length !== 0
+      ) {
+        setButtonState(false);
+      } else {
+        setButtonState(true);
+      }
     } else {
+      setSurname("");
+      setName("");
+      setPatronymic("");
+      setLogin("");
+      setPassword("");
+      setErrorSpan("");
       setButtonState(true);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [surname, name, patronymic, login, password]);
 
   async function Go() {

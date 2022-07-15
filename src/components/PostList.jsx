@@ -55,9 +55,27 @@ function PostList() {
   }
 
   React.useEffect(async () => {
-    const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
-    setThisUserId(sessionStorageUserData[0].id_пользователя);
-    LoadPosts();
+    let isMounted = true;
+
+    if (isMounted) {
+      const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
+      setThisUserId(sessionStorageUserData[0].id_пользователя);
+      LoadPosts();
+    } else {
+      setPosts([]);
+      setMyRender(false);
+      setMyTitle("");
+      setMyArea("");
+      setMyFile();
+      setMyVideoUrl("");
+      setThisUserId();
+      setFormVisibility(true);
+      setPostAuthor([]);
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [myRender]);
   return (
     <div className="row">

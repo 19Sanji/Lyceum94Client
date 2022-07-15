@@ -21,12 +21,23 @@ function AdminPage() {
   }
 
   React.useEffect(() => {
-    GetSuggestPosts();
-    if (suggestPosts.length === 0) {
-      setNoSuggestPostVisibility(true);
+    let isMounted = true;
+
+    if (isMounted) {
+      GetSuggestPosts();
+      if (suggestPosts.length === 0) {
+        setNoSuggestPostVisibility(true);
+      } else {
+        setNoSuggestPostVisibility(false);
+      }
     } else {
       setNoSuggestPostVisibility(false);
+      setSuggestPosts([]);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -43,9 +54,9 @@ function AdminPage() {
           <table className="table">
             <thead>
               <tr className="myTr">
-                <th className="td1" >Название поста</th>
-                <th className="td2" >Автор поста</th>
-                <th className="td3" ></th>
+                <th className="td1">Название поста</th>
+                <th className="td2">Автор поста</th>
+                <th className="td3"></th>
               </tr>
             </thead>
             <tbody></tbody>

@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import "react-bootstrap";
 import "../styles/PostIdPage.css";
-import YouTubePlayer from "./YouTubePlayer";
 import Comments from "./Comments";
+import MyYouTubePlayer from "./MyYouTubePlayer";
 
 function PostIdPage() {
   const [myPost, setMyPost] = React.useState([]);
@@ -32,25 +32,43 @@ function PostIdPage() {
   }
 
   React.useEffect(async () => {
-    const thisUrl = window.location.href;
-    const tempId = thisUrl.split("/").pop();
-    setIdPost(tempId);
-    if (idPost) {
-      LoadPost();
-    }
-    console.log(myPost);
-    if (myPost) {
-      setPostId(myPost[0].id_поста)
-      setPostTitle(myPost[0].Заголовок);
-      setPostText(myPost[0].Текст);
-      setPostImg(myPost[0].Ссылка_на_изображение);
-      setPostVideoUrl(myPost[0].Ссылка_на_YouTube);
-      if (myPost[0].Ссылка_на_YouTube!=="") {
-        setVideoVisibility(true);
-      } else {
-        setVideoVisibility(false);
+    let isMounted = true;
+
+    if (isMounted) {
+      const thisUrl = window.location.href;
+      const tempId = thisUrl.split("/").pop();
+      setIdPost(tempId);
+      if (idPost) {
+        LoadPost();
       }
+      console.log(myPost);
+      if (myPost) {
+        setPostId(myPost[0].id_поста);
+        setPostTitle(myPost[0].Заголовок);
+        setPostText(myPost[0].Текст);
+        setPostImg(myPost[0].Ссылка_на_изображение);
+        setPostVideoUrl(myPost[0].Ссылка_на_YouTube);
+        if (myPost[0].Ссылка_на_YouTube !== "") {
+          setVideoVisibility(true);
+        } else {
+          setVideoVisibility(false);
+        }
+      }
+    } else {
+      setMyPost([]);
+      setPostId();
+      setPostTitle();
+      setPostText();
+      setIdPost();
+      setMyRender(false);
+      setPostImg();
+      setPostVideoUrl();
+      setVideoVisibility(true);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [idPost, myRender]);
 
   return (
@@ -64,7 +82,7 @@ function PostIdPage() {
           />
         </div>
         <div className="myVideo" hidden={!videoVisibility}>
-          <YouTubePlayer postVideoUrl={postVideoUrl} />
+          <MyYouTubePlayer postVideoUrl={postVideoUrl} />
         </div>
         <div>{postText}</div>
       </div>

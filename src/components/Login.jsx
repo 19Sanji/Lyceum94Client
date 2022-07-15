@@ -14,7 +14,19 @@ const Login = observer(() => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    userData.LogOut();
+    let isMounted = true;
+
+    if (isMounted) {
+      userData.LogOut();
+    } else {
+      setLogin("");
+      setPassword("");
+      setErrorSpan("");
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   async function Go() {

@@ -7,7 +7,16 @@ import "../styles/SuggestPost.css";
 export default function SuggestPost({ data }) {
   let navigate = useNavigate();
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="suggestPostContent">

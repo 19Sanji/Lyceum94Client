@@ -16,15 +16,22 @@ function Slider() {
   ];
   const [activeIndex, setActiveIndex] = React.useState(0);
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((current) => {
-        const res = current === img.length - 1 ? 0 : current + 1;
+    let isMounted = true;
 
-        return res;
-      });
-    }, 3000);
+    if (isMounted) {
+      const interval = setInterval(() => {
+        setActiveIndex((current) => {
+          const res = current === img.length - 1 ? 0 : current + 1;
 
-    return () => clearInterval();
+          return res;
+        });
+      }, 3000);
+    }
+
+    return () => {
+      isMounted = false;
+      clearInterval();
+    };
   }, []);
 
   const prevImgIndex = activeIndex ? activeIndex - 1 : img.length - 1;

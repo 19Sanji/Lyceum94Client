@@ -16,25 +16,40 @@ function PostItems(props) {
 
   let navigate = useNavigate();
   React.useEffect(() => {
-    const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
-    if (sessionStorageUserData[0].Статус === "Администратор") {
-      setDeleteBtn(false);
+    let isMounted = true;
+
+    if (isMounted) {
+      const sessionStorageUserData = JSON.parse(sessionStorage.getItem("user"));
+      if (sessionStorageUserData[0].Статус === "Администратор") {
+        setDeleteBtn(false);
+      } else {
+        setDeleteBtn(true);
+      }
+
+      if (props.post.Текст.length > 500) {
+        let myWord = "";
+        for (let i = 0; i < 500; i++) {
+          myWord += props.post.Текст[i];
+        }
+        myWord += " ...";
+        setTextReplacement(myWord);
+      }
+      let tempPostDate = props.post.Дата_публикации
+        .split("T")
+        .shift()
+        .split("-");
+      setPostDate(
+        +tempPostDate[2] + 1 + "." + tempPostDate[1] + "." + tempPostDate[0]
+      );
     } else {
       setDeleteBtn(true);
+      setTextReplacement(props.post.Текст);
+      setPostDate("");
     }
 
-    if (props.post.Текст.length > 500) {
-      let myWord = "";
-      for (let i = 0; i < 500; i++) {
-        myWord += props.post.Текст[i];
-      }
-      myWord += " ...";
-      setTextReplacement(myWord);
-    }
-    let tempPostDate = props.post.Дата_публикации.split("T").shift().split("-");
-    setPostDate(
-      (+tempPostDate[2] + 1 )+ "." + tempPostDate[1] + "." + tempPostDate[0]
-    );
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
